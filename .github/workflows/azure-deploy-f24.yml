@@ -8,15 +8,14 @@ on:
     branches:
       - f24
   workflow_dispatch:
-    
+
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
 
 jobs:
   lint-and-test:
-    uses:
-      ./.github/workflows/test.yaml
+    uses: ./.github/workflows/test.yaml
 
   build-and-deploy:
     if: github.repository == 'bluesleep313/nodebb-f24-bluesleep'
@@ -25,13 +24,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Check out the repository
       - uses: actions/checkout@v4
 
+      # Step 2: Set up the required Node.js version
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
           node-version: '20.17.0'
 
+      # Step 3: Debugging - List files in the directory
+      - name: List files for debugging
+        run: |
+          pwd
+          ls -la
+
+      # Step 4: Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step 5: Set up NodeBB
       - name: Set up NodeBB
         run: |
           ./nodebb setup '{"url":"https://nodebb-f24.azurewebsites.net:443",
@@ -43,7 +55,8 @@ jobs:
             "redis:host": "${{ secrets.REDIS_HOST }}",
             "redis:port": "6379",
             "redis:password": "${{ secrets.REDIS_PASSWORD }}" }'
-          
+
+      # Step 6: Deploy to Azure Web App
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
