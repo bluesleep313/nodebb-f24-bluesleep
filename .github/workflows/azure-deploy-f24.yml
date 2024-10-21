@@ -21,12 +21,10 @@ jobs:
   build-and-deploy:
     if: github.repository == 'bluesleep313/nodebb-f24-bluesleep'
     needs: lint-and-test
-
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out the repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up Node.js version
         uses: actions/setup-node@v3
@@ -39,9 +37,8 @@ jobs:
           ls -la
 
       - name: Install dependencies
-        run: |
-          cd nodebb-f24-bluesleep  # Adjust this if needed based on your directory structure
-          npm install
+        run: npm install
+        working-directory: ./install
 
       - name: Set up NodeBB
         run: |
@@ -54,6 +51,7 @@ jobs:
             "redis:host": "${{ secrets.REDIS_HOST }}",
             "redis:port": "6379",
             "redis:password": "${{ secrets.REDIS_PASSWORD }}" }'
+        working-directory: ./install
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
@@ -62,4 +60,4 @@ jobs:
           app-name: 'team-bluesleep-db'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_BFAB97B1AB1441ACA7C63280F91AD3F3 }}
-          package: .
+          package: ./install
