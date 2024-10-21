@@ -36,10 +36,14 @@ jobs:
         run: |
           pwd
           ls -la
+        working-directory: ./install
 
       - name: Install dependencies
-        run: |
-          npm install
+        run: npm install
+        working-directory: ./install
+
+      - name: Build NodeBB
+        run: npm run build
         working-directory: ./install
 
       - name: Set up NodeBB
