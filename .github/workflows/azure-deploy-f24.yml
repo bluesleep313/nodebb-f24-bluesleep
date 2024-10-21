@@ -11,7 +11,7 @@ permissions:
   checks: write
 
 concurrency:
-  group: ${{ github.workflow }}
+  group: ${{github.workflow}}
   cancel-in-progress: true
 
 jobs:
@@ -24,7 +24,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out the repository
+        uses: actions/checkout@v4
 
       - name: Set up Node.js version
         uses: actions/setup-node@v3
@@ -37,8 +38,9 @@ jobs:
           ls -la
 
       - name: Install dependencies
-        run: npm install
-        working-directory: ./install
+        run: |
+          npm install
+        working-directory: ./install  # Adjust this based on where the package.json is located
 
       - name: Set up NodeBB
         run: |
@@ -51,7 +53,6 @@ jobs:
             "redis:host": "${{ secrets.REDIS_HOST }}",
             "redis:port": "6379",
             "redis:password": "${{ secrets.REDIS_PASSWORD }}" }'
-        working-directory: ./install
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
@@ -60,4 +61,4 @@ jobs:
           app-name: 'team-bluesleep-db'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_BFAB97B1AB1441ACA7C63280F91AD3F3 }}
-          package: ./install
+          package: ./install  # Adjust this based on where the build package is located
