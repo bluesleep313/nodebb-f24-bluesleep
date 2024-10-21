@@ -37,11 +37,14 @@ jobs:
       - name: List files for debugging
         run: |
           pwd
-          ls -la
+          ls -Rla
 
-      # Step 4: Install dependencies
+      # Step 4: Navigate to the correct directory and install dependencies
       - name: Install dependencies
-        run: npm install
+        run: |
+          cd install  # Navigate to the 'install' directory
+          ls -la      # Confirm presence of package.json
+          npm install # Install dependencies
 
       # Step 5: Set up NodeBB
       - name: Set up NodeBB
