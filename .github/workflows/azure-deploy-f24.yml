@@ -19,7 +19,7 @@ jobs:
       ./.github/workflows/test.yaml
 
   build-and-deploy:
-    if: github.repository == 'bluesleep/nodebb-f24-bluesleep'
+    if: github.repository == 'bluesleep313/nodebb-f24-bluesleep'
     needs: lint-and-test
 
     runs-on: ubuntu-latest
