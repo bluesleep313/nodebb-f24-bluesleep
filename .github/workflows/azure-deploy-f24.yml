@@ -37,6 +37,7 @@ jobs:
 
       - name: Build NodeBB
         run: npm run build --prefix ./install
+        # Only if a build script is needed in package.json
 
       - name: Set up NodeBB
         run: ./nodebb setup
