@@ -1,6 +1,3 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
 name: Build and deploy Node.js app to Azure Web App - nodebb-f24
 
 on:
@@ -9,7 +6,6 @@ on:
       - f24
   workflow_dispatch:
 
-# Ensure proper permissions are set for accessing contents and running checks
 permissions:
   contents: read
   checks: write
@@ -29,44 +25,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the repository
-      - uses: actions/checkout@v4
+      - name: Check out the repository
+        uses: actions/checkout@v4
 
-      # Step 2: Set up the Node.js version to LTS (18.x)
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
+          node-version: '20.17.0'
 
-      # Step 3: List files for debugging
       - name: List files for debugging
         run: |
           pwd
           ls -la
 
-      # Step 4: Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: |
+          cd nodebb-f24-bluesleep  # Adjust this if needed based on your directory structure
+          npm install
 
-      # Step 5: Ensure NodeBB setup command works
       - name: Set up NodeBB
         run: |
-          if [ -f ./nodebb ]; then
-            ./nodebb setup '{"url":"https://nodebb-f24.azurewebsites.net:443",
-              "admin:username": "admin",
-              "admin:password": "${{ secrets.ADMIN_PASSWORD }}",
-              "admin:password:confirm": "${{ secrets.ADMIN_PASSWORD }}",
-              "admin:email": "rohanpadhye@cmu.edu",
-              "database": "redis",
-              "redis:host": "${{ secrets.REDIS_HOST }}",
-              "redis:port": "6379",
-              "redis:password": "${{ secrets.REDIS_PASSWORD }}" }'
-          else
-            echo "NodeBB setup file not found."
-            exit 1
-          fi
+          ./nodebb setup '{"url":"https://nodebb-f24.azurewebsites.net:443",
+            "admin:username": "admin",
+            "admin:password": "${{ secrets.ADMIN_PASSWORD }}",
+            "admin:password:confirm": "${{ secrets.ADMIN_PASSWORD }}",
+            "admin:email": "rohanpadhye@cmu.edu",
+            "database": "redis",
+            "redis:host": "${{ secrets.REDIS_HOST }}",
+            "redis:port": "6379",
+            "redis:password": "${{ secrets.REDIS_PASSWORD }}" }'
 
-      # Step 6: Deploy to Azure Web App
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
