@@ -3,7 +3,6 @@
 
 name: Build and deploy Node.js app to Azure Web App - nodebb-f24
 
-
 on:
   push:
     branches:
