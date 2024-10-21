@@ -11,7 +11,7 @@ permissions:
   checks: write
 
 concurrency:
-  group: ${{github.workflow}}
+  group: ${{ github.workflow }}
   cancel-in-progress: true
 
 jobs:
@@ -40,10 +40,6 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: ./install
-
-      - name: Build NodeBB
-        run: npm run build
         working-directory: ./install
 
       - name: Set up NodeBB
