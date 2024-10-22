@@ -32,16 +32,21 @@ jobs:
         with:
           node-version: '20.17.0'
 
-      - name: Install dependencies
+      - name: Install dependencies in main directory
+        run: npm install
+
+      - name: Install dependencies in install directory
         run: npm install
         working-directory: ./install
+
+      - name: Install mkdirp globally
+        run: npm install -g mkdirp
 
       - name: Build NodeBB
         run: node ./test/build.js
 
       - name: Set up NodeBB
         run: ./nodebb setup
-        working-directory: ./install
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
