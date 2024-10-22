@@ -38,7 +38,6 @@ jobs:
 
       - name: Build NodeBB
         run: node ./test/build.js
-        working-directory: ./install
 
       - name: Set up NodeBB
         run: ./nodebb setup
