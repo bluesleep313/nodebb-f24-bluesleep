@@ -37,8 +37,8 @@ jobs:
         working-directory: ./install
 
       - name: Build NodeBB
-        run: npm run build --prefix ./install
-        # Only if a build script is needed in package.json
+        run: node ./test/build.js
+        working-directory: ./install
 
       - name: Set up NodeBB
         run: ./nodebb setup
